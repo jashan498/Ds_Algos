@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-template <template T>
+template <typename T>
 class BinaryTreeNode{
 
 	T data;
