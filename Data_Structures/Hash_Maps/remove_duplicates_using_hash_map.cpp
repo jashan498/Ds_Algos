@@ -17,8 +17,9 @@ vector<int> removeDuplicates(int * a, int size) {
 
 	for(int i=0; i<size; i++)
 	{
-		if(seen.count(a[i]) > 0)
+		if(seen.count(a[i]) > 0){
 			continue;
+		}
 
 		seen[a[i]] = true;
 		output.push_back(a[i]);
