@@ -65,6 +65,43 @@ private:
 
 public:
 
+	void rehash() { 					// rehashes the old map to newer one to reduce n/b ratio.
+		MapNode<V>** temp = buckets;
+		buckets = new MapNode<V>*[2*numBuckets];
+
+		for(int i =0; i< 2*numBuckets; i++)
+		{
+			buckets[i] = NULL;
+		}
+
+		int oldBucketCount = numBuckets;
+		numBuckets *= 2;  // double the size of array
+		count = 0;
+
+		for(int i =0; i < oldBucketCount; i++)
+		{
+			MapNode<V>* head = temp[i];  // To traverse older map
+
+			while(head != NULL){
+				string key = head -> key;
+				V value = head -> value;
+				insert(key, value);
+				head = head -> next;
+			}
+		}
+
+		for(int i = 0; i < oldBucketCount; i++)
+		{
+			MapNode<V>* head = temp[i];
+			delete head;
+		}
+
+		delete [] temp;
+
+	}
+
+
+
 	void size(){
 		return count;
 	}
@@ -88,6 +125,11 @@ public:
 		node -> next = head;
 		buckets[bucketIndex] = node;
 		count++;
+
+		int loadfactor = size()/numBuckets;
+		if(loadfactor > 0.7){
+			rehash();
+		}
 	}
 
 	void remove(string key) {
